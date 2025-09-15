@@ -115,27 +115,27 @@ export default function UserDashboard() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Global Harvest Origins</CardTitle>
-              <CardDescription>Interactive 3D view of your product sources</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <HarvestGlobe />
-            </CardContent>
-          </Card>
+        {/* Global Harvest Origins - Full Width */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Global Harvest Origins</CardTitle>
+            <CardDescription>Interactive 3D view of your product sources</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <HarvestGlobe />
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Supply Chain Journey</CardTitle>
-              <CardDescription>3D visualization of your product's journey</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <SupplyChain3D />
-            </CardContent>
-          </Card>
-        </div>
+        {/* Supply Chain Journey - Full Width Below */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Supply Chain Journey</CardTitle>
+            <CardDescription>3D visualization of your product's journey</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SupplyChain3D />
+          </CardContent>
+        </Card>
 
         {/* Quick Access Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
