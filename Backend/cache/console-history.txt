@@ -1,0 +1,8 @@
+Get-Content .env | Select-String "REDIS"
+type .env | findstr REDIS
+netstat -an | findstr :5000
+curl http://localhost:5000
+echo "Exiting console..."
+exit
+npm run dev
+cd "D:\Games\SIH Project\Backend" && timeout 5 npm run dev
