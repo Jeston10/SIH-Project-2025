@@ -8,6 +8,32 @@ import { Badge } from "@/components/ui/badge"
 import DashboardLayout from "@/components/dashboard-layout"
 import { Home, MapPin, Building2, Package, FlaskConical, Search, CheckCircle, Thermometer } from "lucide-react"
 
+interface ProcessingStep {
+  name: string
+  status: string
+  startTime: string
+  endTime: string
+  duration: string
+  notes: string
+  temperature?: string
+  meshSize?: string
+  process?: string
+  packageType?: string
+}
+
+interface ProcessingRecord {
+  id: string
+  batchId: string
+  product: string
+  facilityName: string
+  facilityLocation: string
+  startDate: string
+  completionDate: string
+  status: string
+  steps: ProcessingStep[]
+  qualityChecks: { parameter: string; value: string; standard: string; status: string }[]
+}
+
 const navigation = [
   { name: "Dashboard", href: "/user/dashboard", icon: Home, current: false },
   { name: "Harvest Origins", href: "/user/harvest-origins", icon: MapPin, current: false },
@@ -16,7 +42,7 @@ const navigation = [
   { name: "Quality Reports", href: "/user/quality-reports", icon: FlaskConical, current: false },
 ]
 
-const processingData = [
+const processingData: ProcessingRecord[] = [
   {
     id: "P001",
     batchId: "B001",

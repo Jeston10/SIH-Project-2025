@@ -99,7 +99,6 @@ export default function LoginPage() {
             <motion.div
               className="flex items-center justify-center lg:justify-start gap-4"
               whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.1 }}
             >
               <motion.div
                 className="w-16 h-16 bg-gradient-to-br from-primary to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg"
@@ -150,12 +149,11 @@ export default function LoginPage() {
                     rotateX: 5,
                     boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
                   }}
-                  transition={{ duration: 0.1 }}
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   <Card className="border-2 hover:border-primary/50 transition-all duration-300 bg-white/80 backdrop-blur-sm">
                     <CardContent className="p-6 text-center">
-                      <motion.div whileHover={{ scale: 1.2, rotate: 5 }} transition={{ duration: 0.1 }}>
+                      <motion.div whileHover={{ scale: 1.2, rotate: 5 }}>
                         <Icon className="w-10 h-10 text-primary mx-auto mb-3" />
                       </motion.div>
                       <h3 className="font-semibold text-base mb-2">{type.label}</h3>
@@ -177,7 +175,6 @@ export default function LoginPage() {
             y: -5,
             boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
           }}
-          transition={{ duration: 0.1 }}
           style={{ transformStyle: "preserve-3d" }}
         >
           <Card className="w-full max-w-md mx-auto bg-white/90 backdrop-blur-sm border-0 shadow-2xl">
@@ -258,7 +255,7 @@ export default function LoginPage() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.4 }}>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.1 }}>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     onClick={handleLogin}
                     className="w-full h-12 text-base font-semibold bg-gradient-to-r from-primary to-emerald-600 hover:from-primary/90 hover:to-emerald-600/90 transition-all duration-300"
@@ -342,7 +339,6 @@ export default function LoginPage() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1 }}
                           whileHover={{ scale: 1.02, y: -2 }}
-                          transition={{ duration: 0.1 }}
                         >
                           <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Icon className="w-6 h-6 text-primary" />

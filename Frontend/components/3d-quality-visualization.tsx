@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber"
 import { Sphere, Box, OrbitControls, Text, Environment } from "@react-three/drei"
 import { useRef, useState } from "react"
 import type { Group } from "three"
+import NoSSR from "./NoSSR"
 
 interface QualityMetric {
   name: string
@@ -47,10 +48,14 @@ function QualityNode({ metric }: { metric: QualityMetric }) {
   )
 }
 
-export default function QualityVisualization3D() {
+function QualityVisualization3DComponent() {
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
-      <Canvas camera={{ position: [3, 2, 3], fov: 60 }}>
+      <Canvas 
+        camera={{ position: [3, 2, 3], fov: 60 }}
+        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 2]}
+      >
         <Environment preset="city" />
         <ambientLight intensity={0.6} />
         <pointLight position={[10, 10, 10]} />
@@ -68,5 +73,19 @@ export default function QualityVisualization3D() {
         <OrbitControls enableZoom={true} enablePan={false} />
       </Canvas>
     </div>
+  )
+}
+
+export default function QualityVisualization3D() {
+  return (
+    <NoSSR 
+      fallback={
+        <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+          <div className="text-blue-600 text-lg">Loading Quality Visualization...</div>
+        </div>
+      }
+    >
+      <QualityVisualization3DComponent />
+    </NoSSR>
   )
 }

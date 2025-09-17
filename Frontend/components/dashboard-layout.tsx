@@ -114,7 +114,6 @@ export default function DashboardLayout({ children, userType, userName = "User",
                     scale: 1.02,
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
-                  transition={{ duration: 0.1 }}
                 >
                   <Link
                     href={item.href}

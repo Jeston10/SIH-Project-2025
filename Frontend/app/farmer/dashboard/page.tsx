@@ -49,7 +49,6 @@ export default function FarmerDashboard() {
                 scale: 1.02,
                 boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
               }}
-              transition={{ duration: 0.1 }}
             >
               <Card>
                 <CardContent className="p-6">
@@ -83,7 +82,6 @@ export default function FarmerDashboard() {
               rotateY: 2,
               boxShadow: "0 15px 30px rgba(0,0,0,0.12)",
             }}
-            transition={{ duration: 0.1 }}
             style={{ transformStyle: "preserve-3d" }}
           >
             <Card>
@@ -107,7 +105,7 @@ export default function FarmerDashboard() {
                     <span>Yield and quality metrics tracking</span>
                   </div>
                   <Link href="/farmer/harvest-data">
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.1 }}>
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button className="w-full">
                         <Upload className="w-4 h-4 mr-2" />
                         Upload Harvest Data
@@ -128,7 +126,6 @@ export default function FarmerDashboard() {
               rotateY: -2,
               boxShadow: "0 15px 30px rgba(0,0,0,0.12)",
             }}
-            transition={{ duration: 0.1 }}
             style={{ transformStyle: "preserve-3d" }}
           >
             <Card>
@@ -152,7 +149,7 @@ export default function FarmerDashboard() {
                     <span>Weather and soil condition logging</span>
                   </div>
                   <Link href="/farmer/photos-environment">
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.1 }}>
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button className="w-full" variant="secondary">
                         <Camera className="w-4 h-4 mr-2" />
                         Upload Photos & Data
@@ -174,7 +171,6 @@ export default function FarmerDashboard() {
             y: -3,
             boxShadow: "0 12px 24px rgba(0,0,0,0.1)",
           }}
-          transition={{ duration: 0.1 }}
         >
           <Card>
             <CardHeader>
@@ -195,7 +191,6 @@ export default function FarmerDashboard() {
                       scale: 1.01,
                       backgroundColor: "rgba(16, 185, 129, 0.02)",
                     }}
-                    transition={{ duration: 0.1 }}
                   >
                     <div className="space-y-1">
                       <p className="font-medium text-foreground">{upload.field}</p>
@@ -209,7 +204,6 @@ export default function FarmerDashboard() {
                           upload.status === "Verified" ? "bg-primary/10 text-primary" : "bg-secondary/10 text-secondary"
                         }`}
                         whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.1 }}
                       >
                         {upload.status}
                       </motion.span>

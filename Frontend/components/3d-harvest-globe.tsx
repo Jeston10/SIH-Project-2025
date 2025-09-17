@@ -6,6 +6,7 @@ import { useRef, useState, useMemo, Suspense } from "react"
 import { TextureLoader, CanvasTexture, AdditiveBlending, BackSide, DoubleSide, Vector2 } from "three"
 import { extend } from "@react-three/fiber"
 import type { Mesh } from "three"
+import NoSSR from "./NoSSR"
 
 // Atmospheric glow shader material based on the reference
 const AtmosphereShaderMaterial = shaderMaterial(
@@ -204,8 +205,9 @@ function Globe() {
   )
 }
 
-export default function HarvestGlobe() {
+function HarvestGlobe3D() {
   return (
+<<<<<<< Updated upstream
     <div className="w-full h-[600px] rounded-lg overflow-hidden bg-card">
       <Canvas camera={{ position: [0, 0, 2.5], fov: 60 }}>
         {/* Background matching typical card color */}
@@ -248,7 +250,34 @@ export default function HarvestGlobe() {
           maxDistance={5}
           rotateSpeed={0.5}
         />
+=======
+    <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-b from-emerald-50 to-emerald-100">
+      <Canvas 
+        camera={{ position: [0, 0, 3], fov: 60 }}
+        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 2]}
+      >
+        <Environment preset="dawn" />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        <Globe />
+        <OrbitControls enableZoom={true} enablePan={false} />
+>>>>>>> Stashed changes
       </Canvas>
     </div>
+  )
+}
+
+export default function HarvestGlobe() {
+  return (
+    <NoSSR 
+      fallback={
+        <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-b from-emerald-50 to-emerald-100 flex items-center justify-center">
+          <div className="text-emerald-600 text-lg">Loading 3D Globe...</div>
+        </div>
+      }
+    >
+      <HarvestGlobe3D />
+    </NoSSR>
   )
 }

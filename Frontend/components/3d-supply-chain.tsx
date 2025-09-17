@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber"
 import { Box, Cylinder, OrbitControls, Text, Environment } from "@react-three/drei"
 import { useRef, useState } from "react"
 import type { Group } from "three"
+import NoSSR from "./NoSSR"
 
 interface SupplyChainStep {
   id: string
@@ -58,10 +59,14 @@ function ConnectionLine({ from, to }: { from: [number, number, number]; to: [num
   )
 }
 
-export default function SupplyChain3D() {
+function SupplyChain3DComponent() {
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-r from-emerald-50 to-blue-50">
-      <Canvas camera={{ position: [0, 2, 5], fov: 60 }}>
+      <Canvas 
+        camera={{ position: [0, 2, 5], fov: 60 }}
+        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 2]}
+      >
         <Environment preset="studio" />
         <ambientLight intensity={0.6} />
         <pointLight position={[10, 10, 10]} />
@@ -79,5 +84,19 @@ export default function SupplyChain3D() {
         <OrbitControls enableZoom={true} enablePan={false} />
       </Canvas>
     </div>
+  )
+}
+
+export default function SupplyChain3D() {
+  return (
+    <NoSSR 
+      fallback={
+        <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-r from-emerald-50 to-blue-50 flex items-center justify-center">
+          <div className="text-emerald-600 text-lg">Loading Supply Chain...</div>
+        </div>
+      }
+    >
+      <SupplyChain3DComponent />
+    </NoSSR>
   )
 }
