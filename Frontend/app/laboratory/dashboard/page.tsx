@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect } from "react"
+import { fetchLabDashboard } from "@/lib/api"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import DashboardLayout from "@/components/dashboard-layout"
@@ -37,6 +40,9 @@ const testQueue = [
 ]
 
 export default function LaboratoryDashboard() {
+  useEffect(() => {
+    fetchLabDashboard().catch(() => {})
+  }, [])
   return (
     <DashboardLayout userType="laboratory" userName="Dr. Smith" navigation={navigation}>
       <div className="space-y-6">

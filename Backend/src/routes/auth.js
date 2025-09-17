@@ -158,9 +158,19 @@ router.post('/login', validateLogin, catchAsync(async (req, res) => {
   // Reset login attempts
   await user.resetLoginAttempts();
 
-  // Update last login
+  // Ensure stats object exists to avoid runtime errors on older records
+  if (!user.stats) {
+    user.stats = {
+      totalLogins: 0,
+      dataUploads: 0,
+      qualityScore: 0,
+      lastActivity: new Date()
+    };
+  }
+
+  // Update last login and stats
   user.lastLogin = new Date();
-  user.stats.totalLogins += 1;
+  user.stats.totalLogins = (user.stats.totalLogins || 0) + 1;
   user.stats.lastActivity = new Date();
   await user.save();
 

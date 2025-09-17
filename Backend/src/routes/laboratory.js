@@ -73,23 +73,27 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
   try {
     const testData = await getQualityTestData(req.user.id);
     
-    // Mock dashboard data for laboratory
-    const dashboardData = {
-      stats: {
-        totalTests: testData.length || 0,
-        pendingTests: testData.filter(test => test.status === 'pending').length || 0,
-        completedTests: testData.filter(test => test.status === 'completed').length || 0,
-        failedTests: testData.filter(test => test.status === 'failed').length || 0
-      },
-      recentTests: testData.slice(0, 5) || [],
-      testQueue: testData.filter(test => test.status === 'pending').slice(0, 10) || [],
-      equipmentStatus: {
-        dnaSequencer: 'operational',
-        pesticideAnalyzer: 'operational',
-        qualityTester: 'operational',
-        sampleProcessor: 'operational'
-      }
-    };
+    const stats = [
+      { name: 'Tests Completed', value: testData.filter(t => t.status === 'completed').length || 0, change: '+0', changeType: 'positive' },
+      { name: 'Pending Analysis', value: testData.filter(t => t.status === 'pending').length || 0, change: '+0', changeType: 'positive' },
+      { name: 'DNA Samples', value: testData.filter(t => (t.testType || '').toLowerCase().includes('dna')).length || 0, change: '+0', changeType: 'positive' },
+      { name: 'Quality Score', value: '98%', change: '+0%', changeType: 'positive' }
+    ];
+
+    const recentTests = (Array.isArray(testData) ? testData : []).slice(0, 5).map((t, i) => ({
+      id: t.testId || `T${i + 1}`,
+      sample: t.sampleId || 'Sample',
+      type: t.testType || 'Quality Test',
+      status: t.status || (t.result ? 'Completed' : 'Pending'),
+      result: t.result || 'Pending'
+    }));
+
+    const testQueue = (Array.isArray(testData) ? testData : [])
+      .filter(t => (t.status || '').toLowerCase() === 'pending')
+      .slice(0, 10)
+      .map((t, i) => ({ id: t.testId || `Q${i + 1}`, sample: t.sampleId || 'Sample', priority: 'Medium', estimatedTime: '4 hours' }));
+
+    const dashboardData = { stats, recentTests, testQueue };
 
     res.json({
       success: true,

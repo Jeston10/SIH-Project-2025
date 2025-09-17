@@ -51,3 +51,38 @@ router.get('/processing', authenticateToken, async (req, res) => {
 });
 
 export default router;
+
+// Dashboard for facility
+router.get('/dashboard', authenticateToken, async (req, res) => {
+  try {
+    let activeBatches = [];
+    try {
+      const raw = await getProcessingData(req.user.id);
+      if (Array.isArray(raw)) {
+        activeBatches = raw.slice(0, 4).map((p, i) => ({
+          id: p.batchId || `B${i + 1}`,
+          product: p.product || p.cropType || 'Product',
+          stage: p.stepName || p.stage || 'Processing',
+          progress: Number(p.progress ?? 50),
+          status: p.status || 'In Progress',
+        }));
+      }
+    } catch {}
+
+    const stats = [
+      { name: 'Active Batches', value: (activeBatches.length || 0).toString(), change: '+0', changeType: 'positive' },
+      { name: 'Processing Steps', value: '0', change: '+0', changeType: 'positive' },
+      { name: 'Shipments Today', value: '0', change: '+0', changeType: 'positive' },
+      { name: 'Quality Score', value: '96%', change: '+0%', changeType: 'positive' }
+    ];
+
+    const recentShipments = [];
+
+    res.json({
+      success: true,
+      data: { stats, activeBatches, recentShipments }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch dashboard', error: error.message });
+  }
+});

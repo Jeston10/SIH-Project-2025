@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { fetchFacilityDashboard } from "@/lib/api"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import DashboardLayout from "@/components/dashboard-layout"
@@ -12,27 +15,70 @@ const navigation = [
   { name: "Transportation", href: "/facility/transportation", icon: Truck, current: false },
 ]
 
-const stats = [
+const defaultStats = [
   { name: "Active Batches", value: "12", change: "+3", changeType: "positive" },
   { name: "Processing Steps", value: "48", change: "+8", changeType: "positive" },
   { name: "Shipments Today", value: "6", change: "+2", changeType: "positive" },
   { name: "Quality Score", value: "96%", change: "+2%", changeType: "positive" },
 ]
 
-const activeBatches = [
+const defaultActiveBatches = [
   { id: "B001", product: "Wheat Flour", stage: "Grinding", progress: 75, status: "In Progress" },
   { id: "B002", product: "Rice", stage: "Drying", progress: 45, status: "In Progress" },
   { id: "B003", product: "Corn Meal", stage: "Packaging", progress: 90, status: "In Progress" },
   { id: "B004", product: "Barley", stage: "Quality Check", progress: 100, status: "Completed" },
 ]
 
-const recentShipments = [
+const defaultRecentShipments = [
   { id: "S001", destination: "Mumbai Distribution Center", status: "In Transit", eta: "2 hours" },
   { id: "S002", destination: "Delhi Warehouse", status: "Delivered", eta: "Completed" },
   { id: "S003", destination: "Bangalore Hub", status: "Loading", eta: "4 hours" },
 ]
 
 export default function FacilityDashboard() {
+  const [stats, setStats] = useState(defaultStats)
+  const [activeBatches, setActiveBatches] = useState(defaultActiveBatches)
+  const [recentShipments, setRecentShipments] = useState(defaultRecentShipments)
+
+  useEffect(() => {
+    fetchFacilityDashboard()
+      .then((res) => {
+        const data = res?.data || res
+        if (!data) return
+        if (Array.isArray(data.stats)) {
+          setStats(
+            data.stats.map((s: any) => ({
+              name: s.name ?? "",
+              value: String(s.value ?? "0"),
+              change: String(s.change ?? ""),
+              changeType: s.changeType === "negative" ? "negative" : "positive",
+            }))
+          )
+        }
+        if (Array.isArray(data.activeBatches)) {
+          setActiveBatches(
+            data.activeBatches.map((b: any) => ({
+              id: b.id ?? b.batchId ?? "",
+              product: b.product ?? "",
+              stage: b.stage ?? b.phase ?? "",
+              progress: Number(b.progress ?? 0),
+              status: b.status ?? "In Progress",
+            }))
+          )
+        }
+        if (Array.isArray(data.recentShipments)) {
+          setRecentShipments(
+            data.recentShipments.map((s: any) => ({
+              id: s.id ?? "",
+              destination: s.destination ?? s.to ?? "",
+              status: s.status ?? "In Transit",
+              eta: s.eta ?? s.estimatedTime ?? "",
+            }))
+          )
+        }
+      })
+      .catch(() => {})
+  }, [])
   return (
     <DashboardLayout userType="facility" userName="Sarah Manager" navigation={navigation}>
       <div className="space-y-6">

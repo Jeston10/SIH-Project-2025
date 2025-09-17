@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect } from "react"
+import { fetchUserDashboard } from "@/lib/api"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import DashboardLayout from "@/components/dashboard-layout"
@@ -83,6 +86,9 @@ const featuredProducts = [
 ]
 
 export default function UserDashboard() {
+  useEffect(() => {
+    fetchUserDashboard().catch(() => {})
+  }, [])
   return (
     <DashboardLayout userType="user" userName="John Consumer" navigation={navigation}>
       <div className="space-y-6">

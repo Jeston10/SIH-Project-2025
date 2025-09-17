@@ -2,11 +2,13 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Leaf, Menu, LogOut, User } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useAuth } from "@/components/providers"
+import { useRouter } from "next/navigation"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -22,8 +24,17 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, userType, userName = "User", navigation }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { isAuthenticated, logout } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/")
+    }
+  }, [isAuthenticated, router])
 
   const handleLogout = () => {
+    logout()
     window.location.href = "/"
   }
 

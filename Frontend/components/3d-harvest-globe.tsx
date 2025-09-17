@@ -207,62 +207,20 @@ function Globe() {
 
 function HarvestGlobe3D() {
   return (
-<<<<<<< Updated upstream
-    <div className="w-full h-[600px] rounded-lg overflow-hidden bg-card">
-      <Canvas camera={{ position: [0, 0, 2.5], fov: 60 }}>
-        {/* Background matching typical card color */}
-        <color attach="background" args={['#f8fafc']} />
-        
-        {/* Enhanced lighting for better Earth visibility */}
-        <directionalLight 
-          position={[5, 3, 5]} 
-          intensity={2.5} 
-          color="#ffffff"
-        />
-        <directionalLight 
-          position={[-5, -3, -5]} 
-          intensity={1.0} 
-          color="#ffffff"
-        />
-        <ambientLight intensity={0.8} color="#ffffff" />
-        <pointLight position={[10, 10, 10]} intensity={1.5} color="#ffffff" />
-        
-        {/* Suspense for texture loading with better fallback */}
-        <Suspense fallback={
-          <group>
-            <Sphere args={[1, 32, 32]}>
-              <meshStandardMaterial color="#1e40af" />
-            </Sphere>
-            {harvestPoints.map((point) => (
-              <HarvestMarker key={point.id} point={point} onHoverChange={() => {}} />
-            ))}
-          </group>
-        }>
-          <Globe />
-        </Suspense>
-        
-        <OrbitControls 
-          enableZoom={true} 
-          enablePan={false} 
-          enableDamping={true}
-          dampingFactor={0.05}
-          minDistance={1.5}
-          maxDistance={5}
-          rotateSpeed={0.5}
-        />
-=======
     <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-b from-emerald-50 to-emerald-100">
       <Canvas 
         camera={{ position: [0, 0, 3], fov: 60 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
       >
-        <Environment preset="dawn" />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
+        <Environment preset="dawn" intensity={1.2} />
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[5, 3, 5]} intensity={2.0} color="#ffffff" />
+        <directionalLight position={[-5, -3, -5]} intensity={0.8} color="#ffffff" />
+        <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={0.6} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} />
         <Globe />
         <OrbitControls enableZoom={true} enablePan={false} />
->>>>>>> Stashed changes
       </Canvas>
     </div>
   )

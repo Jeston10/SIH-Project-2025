@@ -3,6 +3,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import DashboardLayout from "@/components/dashboard-layout"
+import { useEffect, useState } from "react"
+import { fetchFarmerDashboard } from "@/lib/api"
 import { Home, Upload, Camera, BarChart3, MapPin, Thermometer } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -13,20 +15,52 @@ const navigation = [
   { name: "Photos & Environment", href: "/farmer/photos-environment", icon: Camera, current: false },
 ]
 
-const stats = [
+const defaultStats = [
   { name: "Total Harvests", value: "24", change: "+12%", changeType: "positive" },
   { name: "Active Fields", value: "8", change: "+2", changeType: "positive" },
   { name: "Data Uploads", value: "156", change: "+23%", changeType: "positive" },
   { name: "Quality Score", value: "94%", change: "+5%", changeType: "positive" },
 ]
 
-const recentUploads = [
+const defaultRecentUploads = [
   { id: 1, field: "North Field A", crop: "Wheat", date: "2024-01-15", status: "Verified" },
   { id: 2, field: "South Field B", crop: "Rice", date: "2024-01-14", status: "Processing" },
   { id: 3, field: "East Field C", crop: "Corn", date: "2024-01-13", status: "Verified" },
 ]
 
 export default function FarmerDashboard() {
+  const [stats, setStats] = useState(defaultStats)
+  const [recentUploads, setRecentUploads] = useState(defaultRecentUploads)
+
+  useEffect(() => {
+    fetchFarmerDashboard()
+      .then((res) => {
+        const data = res?.data || res
+        if (!data) return
+        if (data.stats && Array.isArray(data.stats)) {
+          setStats(
+            data.stats.map((s: any) => ({
+              name: s.name ?? "",
+              value: String(s.value ?? "0"),
+              change: String(s.change ?? ""),
+              changeType: s.changeType === "negative" ? "negative" : "positive",
+            }))
+          )
+        }
+        if (data.recentUploads && Array.isArray(data.recentUploads)) {
+          setRecentUploads(
+            data.recentUploads.map((u: any, i: number) => ({
+              id: u.id ?? i,
+              field: u.field ?? u.location ?? "Unknown Field",
+              crop: u.crop ?? u.product ?? "",
+              date: u.date ?? u.createdAt ?? "",
+              status: u.status ?? "Pending",
+            }))
+          )
+        }
+      })
+      .catch(() => {})
+  }, [])
   return (
     <DashboardLayout userType="farmer" userName="John Farmer" navigation={navigation}>
       <div className="space-y-6">

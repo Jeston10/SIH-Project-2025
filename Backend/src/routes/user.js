@@ -45,28 +45,36 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
   try {
     const supplyChainData = await getSupplyChainData();
     
-    // Mock dashboard data for end users
+    const userStats = [
+      { name: 'Active Orders', value: 3, change: '+1', changeType: 'positive' },
+      { name: 'Products Tracked', value: supplyChainData.length || 0, change: '+0', changeType: 'positive' },
+      { name: 'Quality Score', value: '98%', change: '+0%', changeType: 'positive' },
+      { name: 'Verified Origins', value: (supplyChainData.filter(i => i.verified).length || 0), change: '+0', changeType: 'positive' }
+    ];
+
+    const recentOrders = (supplyChainData || []).slice(0, 5).map((item, i) => ({
+      id: item.orderId || `ORD${String(i + 1).padStart(3, '0')}`,
+      product: item.product || item.name || 'Product',
+      quantity: item.quantity || '1 unit',
+      status: item.status || 'processing',
+      orderDate: item.orderDate || new Date().toISOString().slice(0, 10),
+      deliveryDate: item.deliveryDate || new Date(Date.now() + 5*24*3600*1000).toISOString().slice(0, 10),
+      batchId: item.batchId || `B${String(i + 1).padStart(3, '0')}`,
+    }));
+
+    const featuredProducts = (supplyChainData || []).slice(0, 6).map((p, i) => ({
+      id: p.productId || `P${i + 1}`,
+      name: p.name || p.product || 'Product',
+      origin: p.origin || p.supplier || 'Farm',
+      qualityScore: p.qualityScore || 95,
+      certifications: p.certifications || ['Verified'],
+      image: p.image || ''
+    }));
+
     const dashboardData = {
-      stats: {
-        totalProducts: supplyChainData.length || 0,
-        verifiedProducts: supplyChainData.filter(item => item.verified).length || 0,
-        pendingVerification: supplyChainData.filter(item => !item.verified).length || 0,
-        trustedSuppliers: [...new Set(supplyChainData.map(item => item.supplier))].length || 0
-      },
-      recentOrders: supplyChainData.slice(0, 5) || [],
-      featuredProducts: supplyChainData.filter(item => item.featured).slice(0, 6) || [],
-      trustMetrics: {
-        overallTrustScore: 95,
-        transparencyScore: 92,
-        qualityScore: 98,
-        sustainabilityScore: 89
-      },
-      supplyChainVisualization: {
-        totalSteps: 8,
-        completedSteps: 6,
-        currentStep: 'Quality Testing',
-        estimatedCompletion: '2024-01-20T10:00:00Z'
-      }
+      userStats,
+      recentOrders,
+      featuredProducts
     };
 
     res.json({
