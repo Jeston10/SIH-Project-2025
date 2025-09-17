@@ -170,14 +170,14 @@ export const setupSecurityMiddleware = (app) => {
   }
 
   if (process.env.ENABLE_RATE_LIMITING !== 'false') {
-    // Apply general rate limiting
-    app.use(createRateLimit());
-    console.log('✅ Rate limiting enabled');
+    // Apply general rate limiting - DISABLED FOR DEVELOPMENT
+    // app.use(createRateLimit());
+    console.log('⚠️  Rate limiting disabled');
   }
 
-  // Apply slow down middleware
-  app.use(createSlowDown());
-  console.log('✅ Slow down middleware enabled');
+  // Apply slow down middleware - DISABLED FOR DEVELOPMENT
+  // app.use(createSlowDown());
+  console.log('⚠️  Slow down middleware disabled');
 
   console.log('🔒 Security middleware setup complete');
 };

@@ -7,6 +7,7 @@ import { loginRequest } from "@/lib/api"
 type AuthContextType = {
   token: string | null
   isAuthenticated: boolean
+  isLoading: boolean
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
 }
@@ -15,15 +16,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const t = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
     if (t) setToken(t)
+    setIsLoading(false)
   }, [])
 
   const value = useMemo<AuthContextType>(() => ({
     token,
     isAuthenticated: Boolean(token),
+    isLoading,
     async login(email, password) {
       try {
         const data = await loginRequest(email, password)
@@ -42,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem("auth_token")
       setToken(null)
     },
-  }), [token])
+  }), [token, isLoading])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

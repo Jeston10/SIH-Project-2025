@@ -1,45 +1,10 @@
 "use client"
 
 import { Canvas, useLoader, useFrame } from "@react-three/fiber"
-import { OrbitControls, Sphere, Html, Environment, shaderMaterial } from "@react-three/drei"
+import { OrbitControls, Sphere, Html, Environment } from "@react-three/drei"
 import { useRef, useState, useMemo, Suspense } from "react"
-import { TextureLoader, CanvasTexture, AdditiveBlending, BackSide, DoubleSide, Vector2 } from "three"
-import { extend } from "@react-three/fiber"
+import { TextureLoader, BackSide } from "three"
 import type { Mesh } from "three"
-import NoSSR from "./NoSSR"
-
-// Atmospheric glow shader material based on the reference
-const AtmosphereShaderMaterial = shaderMaterial(
-  {},
-  // Vertex shader
-  `
-    varying vec3 vNormal;
-    void main() {
-      vNormal = normalize(normalMatrix * normal);
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  // Fragment shader
-  `
-    varying vec3 vNormal;
-    void main() {
-      float intensity = pow(0.6 - dot(vNormal, vec3(0, 0, 1.0)), 4.0);
-      gl_FragColor = vec4(0.1, 0.6, 1.0, 1.0) * intensity;
-    }
-  `
-)
-
-// Extend to make it available in JSX
-extend({ AtmosphereShaderMaterial })
-
-// TypeScript declaration
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      atmosphereShaderMaterial: any
-    }
-  }
-}
 
 interface HarvestPoint {
   id: string
@@ -193,12 +158,13 @@ function Globe() {
         ))}
       </Sphere>
       
-      {/* Atmospheric glow effect */}
+      {/* Atmospheric glow effect - simplified version */}
       <Sphere ref={atmosphereRef} args={[1.55, 64, 64]}>
-        <atmosphereShaderMaterial 
-          blending={AdditiveBlending}
-          side={BackSide}
+        <meshBasicMaterial 
+          color="#0d8cb8"
           transparent
+          opacity={0.3}
+          side={BackSide}
         />
       </Sphere>
     </group>
@@ -213,11 +179,10 @@ function HarvestGlobe3D() {
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
       >
-        <Environment preset="dawn" intensity={1.2} />
+        <Environment preset="dawn" />
         <ambientLight intensity={0.9} />
         <directionalLight position={[5, 3, 5]} intensity={2.0} color="#ffffff" />
         <directionalLight position={[-5, -3, -5]} intensity={0.8} color="#ffffff" />
-        <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={0.6} />
         <pointLight position={[10, 10, 10]} intensity={1.5} />
         <Globe />
         <OrbitControls enableZoom={true} enablePan={false} />
@@ -228,14 +193,8 @@ function HarvestGlobe3D() {
 
 export default function HarvestGlobe() {
   return (
-    <NoSSR 
-      fallback={
-        <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-b from-emerald-50 to-emerald-100 flex items-center justify-center">
-          <div className="text-emerald-600 text-lg">Loading 3D Globe...</div>
-        </div>
-      }
-    >
+    <div className="w-full h-[400px] rounded-lg overflow-hidden bg-gradient-to-b from-emerald-50 to-emerald-100">
       <HarvestGlobe3D />
-    </NoSSR>
+    </div>
   )
 }

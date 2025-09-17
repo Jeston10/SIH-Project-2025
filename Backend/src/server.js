@@ -100,19 +100,19 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API Routes with enhanced security
-app.use('/api/auth', authRateLimit, authRoutes); // Stricter rate limiting for auth
-app.use('/api/farmer', authenticateToken, apiRateLimit, farmerRoutes);
-app.use('/api/facility', authenticateToken, apiRateLimit, facilityRoutes);
-app.use('/api/laboratory', authenticateToken, apiRateLimit, laboratoryRoutes);
-app.use('/api/regulatory', authenticateToken, apiRateLimit, regulatoryRoutes);
-app.use('/api/user', authenticateToken, apiRateLimit, userRoutes);
-app.use('/api/blockchain', authenticateToken, apiRateLimit, blockchainRoutes);
-app.use('/api/gps', authenticateToken, apiRateLimit, gpsRoutes);
-app.use('/api/weather', authenticateToken, apiRateLimit, weatherRoutes);
-app.use('/api/email', authenticateToken, apiRateLimit, emailRoutes);
-app.use('/api/upload', authenticateToken, apiRateLimit, uploadRoutes);
-app.use('/api/realtime', authenticateToken, apiRateLimit, realtimeRoutes);
+// API Routes with rate limiting disabled for development
+app.use('/api/auth', authRoutes); // Rate limiting disabled
+app.use('/api/farmer', authenticateToken, farmerRoutes);
+app.use('/api/facility', authenticateToken, facilityRoutes);
+app.use('/api/laboratory', authenticateToken, laboratoryRoutes);
+app.use('/api/regulatory', authenticateToken, regulatoryRoutes);
+app.use('/api/user', authenticateToken, userRoutes);
+app.use('/api/blockchain', authenticateToken, blockchainRoutes);
+app.use('/api/gps', authenticateToken, gpsRoutes);
+app.use('/api/weather', authenticateToken, weatherRoutes);
+app.use('/api/email', authenticateToken, emailRoutes);
+app.use('/api/upload', authenticateToken, uploadRoutes);
+app.use('/api/realtime', authenticateToken, realtimeRoutes);
 
 // Initialize services
 const blockchainService = new BlockchainService();
