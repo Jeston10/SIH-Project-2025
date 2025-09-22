@@ -167,6 +167,22 @@ export default function SignupPage() {
   }
 
   return (
+    <>
+    {/* Top navbar with About button */}
+    <div className="fixed top-0 left-0 right-0 z-20">
+      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-end gap-3">
+        <Link href="/" className="inline-flex items-center gap-2 rounded-full bg-white/80 hover:bg-white text-slate-700 px-4 py-2 shadow-sm border border-slate-200 backdrop-blur-md transition-colors">
+          <span>Sign in</span>
+        </Link>
+        <button
+          onClick={() => alert('AyurChakra: End-to-end agricultural transparency with GPS traceability, lab quality verification, and blockchain-backed provenance.')}
+          className="inline-flex items-center gap-2 rounded-full bg-white/80 hover:bg-white text-slate-700 px-4 py-2 shadow-sm border border-slate-200 backdrop-blur-md transition-colors"
+        >
+          <span>About</span>
+        </button>
+      </div>
+    </div>
+
     <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-blue-50 to-purple-100 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -442,6 +458,28 @@ export default function SignupPage() {
           </motion.div>
         </div>
       </div>
+
+      {/* Footer with social icons from public */}
+      <footer className="relative z-10 border-t border-slate-200 bg-white/60 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
+          <p className="text-xs text-slate-600">© 2025 AyurChakra. All rights reserved. No copyright trademark.</p>
+          <div className="flex items-center gap-3">
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <img src="/instagram.png" alt="Instagram" className="w-5 h-5 hover:opacity-80" />
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <img src="/facebook.png" alt="Facebook" className="w-5 h-5 hover:opacity-80" />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
+              <img src="/twitter.png" alt="Twitter" className="w-5 h-5 hover:opacity-80" />
+            </a>
+            <a href="https://reddit.com" target="_blank" rel="noreferrer" aria-label="Reddit">
+              <img src="/reddit.png" alt="Reddit" className="w-5 h-5 hover:opacity-80" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
+    </>
   )
 }

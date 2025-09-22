@@ -1,0 +1,37 @@
+{
+  "name": "ayurchakra-smart-contracts",
+  "version": "1.0.0",
+  "description": "AyurChakra Herb Traceability Smart Contracts",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js",
+    "deploy:mumbai": "hardhat run scripts/deploy.js --network mumbai",
+    "deploy:amoy": "hardhat run scripts/deploy.js --network amoy",
+    "verify": "hardhat verify",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "keywords": [
+    "blockchain",
+    "smart-contracts",
+    "ayurvedic",
+    "herbs",
+    "traceability",
+    "supply-chain",
+    "ethereum",
+    "polygon"
+  ],
+  "author": "AyurChakra Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.9"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}

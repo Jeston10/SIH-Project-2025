@@ -1,60 +1,54 @@
-import hre from "hardhat";
-const { ethers } = hre;
+import pkg from "hardhat";
+const { ethers } = pkg;
 
 async function main() {
-  console.log("🚀 Starting AyurChakra Smart Contract Deployment...");
+  console.log("🚀 Starting AyurChakra Herb Traceability Contract Deployment...\n");
 
   // Get the contract factory
-  const AyurChakra = await ethers.getContractFactory("AyurChakra");
+  const AyurChakraContract = await ethers.getContractFactory("AyurChakraHerbTraceability");
 
   // Deploy the contract
-  console.log("📝 Deploying contract...");
-  const ayurChakra = await AyurChakra.deploy();
+  console.log("📦 Deploying contract...");
+  const ayurChakraContract = await AyurChakraContract.deploy();
+  await ayurChakraContract.waitForDeployment();
 
-  // Wait for deployment to complete
-  await ayurChakra.waitForDeployment();
-
-  // Get the contract address
-  const contractAddress = await ayurChakra.getAddress();
-
-  console.log("✅ AyurChakra contract deployed successfully!");
-  console.log("📍 Contract Address:", contractAddress);
-  console.log("🔗 Network:", hre.network.name);
-  console.log("⛽ Gas Used:", (await ayurChakra.deploymentTransaction()).gasLimit.toString());
-
-  // Verify contract info
-  const contractInfo = await ayurChakra.getContractInfo();
-  console.log("👤 Contract Owner:", contractInfo.contractOwner);
-  console.log("📊 Block Number:", contractInfo.blockNumber.toString());
-  console.log("⏰ Timestamp:", new Date(Number(contractInfo.timestamp) * 1000).toISOString());
+  console.log("✅ AyurChakra Herb Traceability Contract deployed to:", await ayurChakraContract.getAddress());
+  console.log("📋 Contract Owner:", await ayurChakraContract.owner());
+  console.log("📊 Total Batches:", (await ayurChakraContract.totalBatches()).toString());
 
   // Save deployment info
   const deploymentInfo = {
-    contractAddress: contractAddress,
-    network: hre.network.name,
-    blockNumber: contractInfo.blockNumber.toString(),
-    timestamp: Number(contractInfo.timestamp).toString(),
-    owner: contractInfo.contractOwner,
-    deploymentDate: new Date().toISOString()
+    contractAddress: await ayurChakraContract.getAddress(),
+    owner: await ayurChakraContract.owner(),
+    deploymentTime: new Date().toISOString(),
+    network: await ethers.provider.getNetwork(),
+    totalBatches: (await ayurChakraContract.totalBatches()).toString()
   };
 
-  console.log("\n📋 Deployment Summary:");
+  console.log("\n📄 Deployment Information:");
   console.log(JSON.stringify(deploymentInfo, null, 2));
 
-  console.log("\n🔧 Next Steps:");
-  console.log("1. Copy the contract address above");
-  console.log("2. Update your .env file with CONTRACT_ADDRESS=" + contractAddress);
-  console.log("3. Verify the contract on Etherscan (optional)");
-  console.log("4. Test the contract functions");
+  // Verify deployment
+  console.log("\n🔍 Verifying deployment...");
+  const owner = await ayurChakraContract.owner();
+  const totalBatches = await ayurChakraContract.totalBatches();
+  
+  if (owner && totalBatches.toString() === "0") {
+    console.log("✅ Contract deployment verified successfully!");
+  } else {
+    console.log("❌ Contract deployment verification failed!");
+  }
 
-  return contractAddress;
+  console.log("\n🎉 Deployment completed successfully!");
+  console.log("🌿 Your AyurChakra Herb Traceability Contract is ready for use!");
+  
+  return await ayurChakraContract.getAddress();
 }
 
 // Execute deployment
 main()
   .then((address) => {
-    console.log("\n🎉 Deployment completed successfully!");
-    console.log("📍 Contract Address:", address);
+    console.log(`\n📍 Contract Address: ${address}`);
     process.exit(0);
   })
   .catch((error) => {

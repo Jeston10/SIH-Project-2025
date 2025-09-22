@@ -1,8 +1,8 @@
-require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config();
+import "@nomicfoundation/hardhat-toolbox";
+import "dotenv/config";
 
 /** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
+export default {
   solidity: {
     version: "0.8.19",
     settings: {
@@ -13,23 +13,28 @@ module.exports = {
     }
   },
   networks: {
-    sepolia: {
-      url: process.env.ETHEREUM_RPC_URL || "https://sepolia.infura.io/v3/YOUR_PROJECT_ID",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      gasPrice: "auto",
-      gas: "auto"
+    hardhat: {
+      chainId: 1337
     },
-    localhost: {
-      url: "http://127.0.0.1:8545"
+    mumbai: {
+      url: process.env.MUMBAI_RPC_URL || "https://rpc-mumbai.maticvigil.com",
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 80001
+    },
+    amoy: {
+      url: process.env.AMOY_RPC_URL || "https://rpc-amoy.polygon.technology",
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 80002
     }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY || "YOUR_ETHERSCAN_API_KEY"
+    apiKey: {
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
+      polygonAmoy: process.env.POLYGONSCAN_API_KEY || ""
+    }
   },
-  paths: {
-    sources: "./contracts",
-    tests: "./test",
-    cache: "./cache",
-    artifacts: "./artifacts"
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: "USD"
   }
 };

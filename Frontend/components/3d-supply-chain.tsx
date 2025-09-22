@@ -37,11 +37,6 @@ function SupplyChainNode({ step }: { step: SupplyChainStep }) {
       <Text position={[0, -0.8, 0]} fontSize={0.2} color="#374151" anchorX="center" anchorY="middle">
         {step.name}
       </Text>
-      {step.status === "in-progress" && (
-        <Cylinder args={[0.1, 0.1, 1.5]} position={[0, 1.2, 0]} rotation={[0, 0, 0]}>
-          <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={0.5} />
-        </Cylinder>
-      )}
     </group>
   )
 }
@@ -66,7 +61,6 @@ function SupplyChain3DComponent() {
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
       >
-        <Environment preset="studio" />
         <ambientLight intensity={0.6} />
         <pointLight position={[10, 10, 10]} />
 

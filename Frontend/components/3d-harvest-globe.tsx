@@ -130,7 +130,6 @@ function Globe() {
   ])
   
   const earthRef = useRef<Mesh>(null)
-  const atmosphereRef = useRef<Mesh>(null)
   const [isAnyPointHovered, setIsAnyPointHovered] = useState(false)
 
   // Track hover state from harvest points
@@ -158,15 +157,6 @@ function Globe() {
         ))}
       </Sphere>
       
-      {/* Atmospheric glow effect - simplified version */}
-      <Sphere ref={atmosphereRef} args={[1.55, 64, 64]}>
-        <meshBasicMaterial 
-          color="#0d8cb8"
-          transparent
-          opacity={0.3}
-          side={BackSide}
-        />
-      </Sphere>
     </group>
   )
 }
@@ -179,7 +169,6 @@ function HarvestGlobe3D() {
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
       >
-        <Environment preset="dawn" />
         <ambientLight intensity={0.9} />
         <directionalLight position={[5, 3, 5]} intensity={2.0} color="#ffffff" />
         <directionalLight position={[-5, -3, -5]} intensity={0.8} color="#ffffff" />
